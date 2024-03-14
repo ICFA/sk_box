@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route("/uptime", methods=["GET"])
 def uptime():
     command = shlex.split(f"uptime")
-    UPTIME = subprocess.run(command, capture_output=True)
+    UPTIME = subprocess.run(command, capture_output=True).stdout
     return f"Current uptime is {UPTIME}"
 
 
