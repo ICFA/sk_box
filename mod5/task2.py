@@ -13,9 +13,9 @@ class CodeForm(FlaskForm):
     timeout = IntegerField(default=10, validators=[NumberRange(min=0, max=30)])
 
 def getResult(code: str, timeout: int):
-    command = f'python3 -c "{code}"'
+    command =f'prlimit --nproc=1:1 python -c "{code}"'
     command = shlex.split(command)
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     isKilled = False
     try:
         outs, errors = process.communicate(timeout=timeout)
@@ -23,7 +23,7 @@ def getResult(code: str, timeout: int):
         process.kill()
         outs, errors = process.communicate()
         isKilled = True
-    return outs.decode(), errors.decode(), isKilled
+    return outs.decode(), errors, isKilled
 
 @app.route("/run_code", methods=["POST"])
 def run_code():
