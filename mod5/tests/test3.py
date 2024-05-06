@@ -1,5 +1,5 @@
 import unittest
-from task3 import BlockErrors
+from hw3 import BlockErrors
 
 class TestBlockErrors(unittest.TestCase):
     def test_div_to_zero(self):

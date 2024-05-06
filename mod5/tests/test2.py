@@ -1,5 +1,5 @@
 import unittest
-from task2 import app
+from hw2 import app
 
 class TestFlask(unittest.TestCase):
     def setUp(self):

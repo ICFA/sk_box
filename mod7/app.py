@@ -2,7 +2,7 @@ import logging
 from logging import config
 
 import utils
-from task6.logger_config import dict_config
+from hw6.logger_config import dict_config
 
 logging.config.dictConfig(dict_config)
 logger = logging.getLogger("app")
