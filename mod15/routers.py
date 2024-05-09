@@ -10,57 +10,21 @@ app: Flask = Flask(__name__)
 @app.route('/add-room', methods=['POST'])
 def add_room():
     if request.method == "POST":
-        data = request.get_json()
-        room = Room(
-            id=None,
-            floor=data["floor"],
-            beds=data["beds"],
-            guestNum=data["guestNum"],
-            price=data["price"]
-        )
-        add_room_to_db(room)
-        return jsonify({"id": room.id}), 201
+        result = add_room_to_db(request.get_json())
+        return result
 
 
-@app.route('/get-rooms', methods=['GET'])
+@app.route('/room', methods=['GET'])
 def get_room():
     rooms = get_rooms(request.args.get('checkIn'), request.args.get('checkOut'))
-    properties = {}
-    properties["rooms"] = []
-    for room in rooms:
-        properties["rooms"].append({
-            "roomId": room.id,
-            "floor": room.floor,
-            "beds": room.beds,
-            "guestNum": room.guestNum,
-            "price": room.price,
-            "bookingParams": {
-                "checkIn": request.args.get('checkIn'),
-                "checkOut": request.args.get('checkOut'),
-                "roomId": room.id
-            }
-        })
-    return jsonify(properties)
+    return rooms
 
 
-@app.route('/book-room', methods=['POST'])
+@app.route('/booking', methods=['POST'])
 def booking():
     if request.method == "POST":
-        data = request.get_json()
-        checkIn = datetime.datetime.strptime(str(data["bookingDates"]["checkIn"]), "%Y%m%d")
-        checkOut = datetime.datetime.strptime(str(data["bookingDates"]["checkOut"]), "%Y%m%d")
-        order = Order(
-            id=None,
-            checkIn=checkIn,
-            checkOut=checkOut,
-            firstName=data["firstName"],
-            lastName=data["lastName"],
-            roomId=data["roomId"]
-        )
-        if check_order(order):
-            return Response(status=409)
-        order_id = add_order_to_db(order)
-        return jsonify({"roomId": order_id}), 201
+        result = add_order_to_db(request.get_json())
+        return result
 
 
 if __name__ == '__main__':
