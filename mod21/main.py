@@ -141,7 +141,7 @@ def recommend_book_to_student(student_id):
 
 
 @app.route('/students/avg-count-book/', methods=['GET'])
-def recommend_book_to_student(student_id):
+def avg_book():
     """Получение среднего количества книг, которые студенты брали в этом месяце"""
     books_count = session.query(func.count(ReceivingBook.id)).filter(extract('month', ReceivingBook.date_of_issue) == datetime.now().month).scalar()
     student_count = session.query(func.count(Student.id)).scalar()
